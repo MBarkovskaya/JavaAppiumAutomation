@@ -38,12 +38,8 @@ public class SecondLesson {
     @Test
     public void findTextSearchIntoInputFieldTest() {
         waitForElementAndClick(By.id("org.wikipedia:id/fragment_onboarding_skip_button"), "Cannot find SKIP button", 5);
-
         waitForElementAndClick(By.xpath("//*[contains(@text,'Search Wikipedia')]"), "Cannot find search input", 5);
-        WebElement titleElement = waitForElementPresent(By.id("org.wikipedia:id/search_src_text"), "Cannot find 'Search Wikipedia' text into the input field");
-        String searchWikipediaText = titleElement.getAttribute("text");
-
-        Assert.assertEquals("We see unexpected title", "Search Wikipedia", searchWikipediaText);
+        checkSearchWikipediaText();
     }
 
     @Test
@@ -51,7 +47,7 @@ public class SecondLesson {
         waitForElementAndClick(By.id("org.wikipedia:id/fragment_onboarding_skip_button"), "Cannot find SKIP button", 5);
         waitForElementAndClick(By.xpath("//*[contains(@text,'Search Wikipedia')]"), "Cannot find search input", 5);
 
-        waitForElementAndSendKeys(By.xpath("//*[contains(@text,'Search Wikipedia')]"), "Java","Cannot find search input", 5);
+        waitForElementAndSendKeys(By.xpath("//*[contains(@text,'Search Wikipedia')]"), "Java", "Cannot find search input", 5);
         WebElement listOfResults = waitForElementPresent(By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']"), "Cannot find list of searching results");
         int size = listOfResults.findElements(By.xpath("//*[@class='android.view.ViewGroup']//*[@resource-id='org.wikipedia:id/page_list_item_title']")).size();
 
@@ -102,6 +98,13 @@ public class SecondLesson {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(erMsg + "\n");
         return wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
+    }
+
+    private void checkSearchWikipediaText() {
+        WebElement titleElement = waitForElementPresent(By.id("org.wikipedia:id/search_src_text"), "Cannot find 'Search Wikipedia' text into the input field");
+        String searchWikipediaText = titleElement.getAttribute("text");
+
+        Assert.assertEquals("We see unexpected title", "Search Wikipedia", searchWikipediaText);
     }
 
 }
